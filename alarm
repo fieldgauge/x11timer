@@ -1,0 +1,23 @@
+#!/bin/bash
+# alarm clock for X11
+
+# time as understood by "at"
+wait="now+${1:-0} min"
+text="${2:-alarm!}"
+method="${3:-zenity}"
+DISPLAY="${DISPLAY:-:0}"
+AT="at"
+
+#echo $method will shout \"${text}\" in $wait
+
+# TODO: add default for unknown method (switch?)
+if [ $method = "zenity" ]; then
+	cmd="$method --info --text='$text'"
+else
+	if [ $method = "tts" ]; then
+		#cmd="echo $text | festival --tts"
+		echo "at cannot connect to sound (FIXME)"
+	fi
+fi
+
+echo "DISPLAY=$DISPLAY $cmd" | $AT $wait
